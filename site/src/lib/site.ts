@@ -13,7 +13,7 @@ export const site = {
   // Profile photo. A placeholder ships at /public/profile.svg. To use your own
   // photo, drop a square image in /public (e.g. profile.jpg) and set this to
   // its filename.
-  photo: 'profile.svg',
+  photo: 'profile.jpg',
 
   location: 'United Kingdom',
   // Contact + social links. Replace placeholders with your real handles.
