@@ -1,0 +1,44 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import status from '../data/status.json';
+
+const state = status.backend.state as 'online' | 'degraded' | 'offline';
+const headline =
+  state === 'online' ? 'All systems operational'
+  : state === 'degraded' ? 'Partial outage'
+  : 'Backend offline';
+
+const generated = new Date(status.generatedAt);
+---
+<BaseLayout title="System status — Innocent Onwukanjo" description="Live status of the portfolio infrastructure.">
+  <p class="eyebrow">Public status</p>
+  <h1 style="display:flex; align-items:center; gap:12px; margin:6px 0 4px">
+    <span class={`dot ${state}`} style="width:14px;height:14px"></span>{headline}
+  </h1>
+  <p class="muted">{status.backend.note}</p>
+
+  <table class="status-table">
+    <thead>
+      <tr><th>Service</th><th>State</th><th style="text-align:right">Latency</th></tr>
+    </thead>
+    <tbody>
+      {
+        status.services.map((svc) => (
+          <tr>
+            <td>{svc.name}</td>
+            <td><span class={`dot ${svc.state}`}></span>&nbsp;{svc.state}</td>
+            <td style="text-align:right; font-family:var(--mono)">
+              {svc.latencyMs != null ? `${svc.latencyMs} ms` : '—'}
+            </td>
+          </tr>
+        ))
+      }
+    </tbody>
+  </table>
+
+  <p class="muted" style="margin-top:20px; font-size:0.85rem">
+    Last updated {generated.toISOString().replace('T', ' ').slice(0, 16)} UTC.
+    Refreshed on a schedule by a GitHub Actions probe that writes
+    <code>status.json</code> and rebuilds this page.
+  </p>
+</BaseLayout>

@@ -1,0 +1,18 @@
+---
+import { withBase } from '../lib/paths';
+
+interface Props {
+  slug: string;
+  title: string;
+  summary: string;
+  stack: string[];
+}
+const { slug, title, summary, stack } = Astro.props;
+---
+<article class="card">
+  <h3><a href={withBase(`/projects/${slug}`)}>{title}</a></h3>
+  <p class="muted" style="margin:0">{summary}</p>
+  <div class="tags">
+    {stack.slice(0, 5).map((s) => <span class="tag">{s}</span>)}
+  </div>
+</article>

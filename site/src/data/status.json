@@ -1,0 +1,14 @@
+{
+  "generatedAt": "2026-09-12T18:00:00Z",
+  "backend": {
+    "state": "online",
+    "activeHost": "arm",
+    "note": "ARM A1.Flex primary online. AMD E2.1.Micro on warm standby."
+  },
+  "services": [
+    { "name": "Portfolio (GitHub Pages)", "state": "online", "latencyMs": 38 },
+    { "name": "Demo API", "state": "online", "latencyMs": 74 },
+    { "name": "Uptime Kuma", "state": "online", "latencyMs": 121 },
+    { "name": "Umami analytics", "state": "degraded", "latencyMs": 410 }
+  ]
+}

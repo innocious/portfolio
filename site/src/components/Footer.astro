@@ -1,0 +1,15 @@
+---
+import status from '../data/status.json';
+import { withBase } from '../lib/paths';
+
+const state = status.backend.state as 'online' | 'degraded' | 'offline';
+const label = state === 'online' ? 'All systems operational' : state === 'degraded' ? 'Partial outage' : 'Backend offline';
+---
+<footer class="site-footer">
+  <div class="container nav">
+    <span class="muted" style="font-size:0.9rem">© {new Date().getFullYear()} Innocent Onwukanjo</span>
+    <a href={withBase('/status')} class="nav-links" style="font-size:0.9rem">
+      <span class={`dot ${state}`}></span>&nbsp;{label}
+    </a>
+  </div>
+</footer>

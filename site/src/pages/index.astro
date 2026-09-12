@@ -1,0 +1,40 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import { withBase } from '../lib/paths';
+
+const projects = (await getCollection('projects')).sort(
+  (a, b) => a.data.order - b.data.order,
+);
+---
+<BaseLayout title="Innocent Onwukanjo — Portfolio">
+  <section class="hero">
+    <p class="eyebrow">Cloud & platform engineering</p>
+    <h1>I build resilient systems that stay useful when the infrastructure underneath them doesn't.</h1>
+    <p>
+      Selected case studies below. This site itself is the running example — a static
+      front end that never goes down, backed by an intermittent free-tier cloud host,
+      with a <a href={withBase('/status')}>public status page</a> that swaps live demos
+      for recorded walkthroughs when the backend is offline.
+    </p>
+  </section>
+
+  <div class="section-head">
+    <h2 style="margin:0">Work</h2>
+    <a class="muted" href={withBase('/status')}>System status →</a>
+  </div>
+
+  <div class="grid">
+    {
+      projects.map((p) => (
+        <ProjectCard
+          slug={p.id}
+          title={p.data.title}
+          summary={p.data.summary}
+          stack={p.data.stack}
+        />
+      ))
+    }
+  </div>
+</BaseLayout>
