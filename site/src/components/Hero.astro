@@ -2,16 +2,19 @@
 import { withBase } from '../lib/paths';
 import { site } from '../lib/site';
 import Icon from './Icon.astro';
+
+const contactHref = site.contact || `mailto:${site.email}`;
 ---
 <section class="hero">
   <div>
     <span class="eyebrow">{site.role}</span>
-    <h1>{site.tagline}</h1>
+    <h1>{site.name}</h1>
+    <p class="hero-headline">{site.headline}</p>
     <p class="lead">{site.about}</p>
 
     <div class="hero-cta">
       <a class="btn btn-primary" href={withBase('/#work')}>View work <Icon name="arrow" size={17} /></a>
-      <a class="btn btn-ghost" href={`mailto:${site.email}`}>Get in touch</a>
+      <a class="btn btn-ghost" href={contactHref}>Get in touch</a>
       {site.resumeUrl && (
         <a class="btn btn-ghost" href={withBase(site.resumeUrl)} target="_blank" rel="noopener"><Icon name="doc" size={16} /> Resume</a>
       )}
@@ -23,6 +26,9 @@ import Icon from './Icon.astro';
       )}
       {site.socials.linkedin && (
         <a class="icon-btn" href={site.socials.linkedin} target="_blank" rel="noopener" aria-label="LinkedIn"><Icon name="linkedin" /></a>
+      )}
+      {site.socials.credly && (
+        <a class="icon-btn" href={site.socials.credly} target="_blank" rel="noopener" aria-label="Credly"><Icon name="credly" /></a>
       )}
       <a class="icon-btn" href={`mailto:${site.email}`} aria-label="Email"><Icon name="mail" /></a>
     </div>

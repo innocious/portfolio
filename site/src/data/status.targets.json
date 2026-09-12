@@ -6,7 +6,7 @@
     "offline": "Backend offline. Showing recorded walkthroughs. Static site unaffected."
   },
   "services": [
-    { "name": "Portfolio (GitHub Pages)", "url": "https://innocious.github.io/Portfolio-Site/" },
+    { "name": "Portfolio (GitHub Pages)", "url": "https://innocious.github.io/portfolio/" },
     { "name": "Demo API", "url": "https://demo.example.com/health", "gate": true },
     { "name": "Uptime Kuma", "url": "https://demo.example.com:3001" },
     { "name": "Umami analytics", "url": "https://demo.example.com/umami" }

@@ -8,7 +8,7 @@ decoupled from the intermittent cloud backend.
 ```bash
 cd site
 npm install
-npm run dev      # http://localhost:4321/Portfolio-Site
+npm run dev      # http://localhost:4321/portfolio
 npm run build    # outputs to site/dist
 npm run preview
 ```
@@ -40,7 +40,7 @@ Build and deployment → Source: GitHub Actions**.
 
 ## Base path
 
-Configured as a project site (`base: '/Portfolio-Site'` in `astro.config.mjs`).
+Configured as a project site (`base: '/portfolio'` in `astro.config.mjs`).
 For a custom domain or a user page, set `base` to `/` and `site` to the domain.
 Always build internal links with the `withBase()` helper so they survive either
 setting.
