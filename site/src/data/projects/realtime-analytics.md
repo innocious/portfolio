@@ -13,7 +13,7 @@ order: 2
 ## The problem
 
 Self-hosted analytics dies with its host. When the origin VM is down for
-maintenance — or stuck waiting on cloud capacity — every event in that window is
+maintenance, or stuck waiting on cloud capacity, every event in that window is
 lost, and the dashboards lie by omission.
 
 ## Approach
@@ -21,7 +21,7 @@ lost, and the dashboards lie by omission.
 - A **Cloudflare Worker** receives click/pageview beacons at the edge and writes
   them to **D1**, so collection survives origin downtime entirely.
 - Events reconcile into the self-hosted dashboard when the origin returns.
-- No cookies, no cross-site identifiers — aggregate counts only.
+- No cookies, no cross-site identifiers. Aggregate counts only.
 
 ## Outcome
 

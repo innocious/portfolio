@@ -1,9 +1,10 @@
 ---
 // Graceful degradation: while the backend is online, surface the live demo;
-// when it's offline, fall back to the recorded walkthrough so the portfolio
+// when it is offline, fall back to the recorded walkthrough so the portfolio
 // never links to a dead endpoint. Driven by the build-time status.json, which
 // the status cron refreshes and rebuilds the site from.
 import status from '../data/status.json';
+import Icon from './Icon.astro';
 
 interface Props {
   demoUrl?: string;
@@ -16,12 +17,12 @@ const showLive = online && Boolean(demoUrl);
 {
   showLive ? (
     <a class="btn btn-primary" href={demoUrl} target="_blank" rel="noopener">
-      ▶ Launch live demo
+      <Icon name="play" size={16} /> Launch live demo
     </a>
   ) : walkthroughUrl ? (
     <a class="btn btn-ghost" href={walkthroughUrl} target="_blank" rel="noopener">
-      ⏺ Watch recorded walkthrough
-      <span class="hint">backend offline — showing walkthrough</span>
+      <Icon name="record" size={14} /> Watch walkthrough
+      <span class="hint">backend offline</span>
     </a>
   ) : (
     <span class="btn btn-disabled">Demo unavailable</span>

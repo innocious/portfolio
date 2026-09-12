@@ -3,7 +3,7 @@
   "notes": {
     "online": "ARM A1.Flex primary online. AMD E2.1.Micro on warm standby.",
     "degraded": "Primary reachable with elevated latency.",
-    "offline": "Backend offline — showing recorded walkthroughs. Static site unaffected."
+    "offline": "Backend offline. Showing recorded walkthroughs. Static site unaffected."
   },
   "services": [
     { "name": "Portfolio (GitHub Pages)", "url": "https://innocious.github.io/Portfolio-Site/" },

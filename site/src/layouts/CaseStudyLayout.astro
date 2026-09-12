@@ -1,6 +1,7 @@
 ---
 import BaseLayout from './BaseLayout.astro';
 import DemoLink from '../components/DemoLink.astro';
+import Icon from '../components/Icon.astro';
 import { withBase } from '../lib/paths';
 
 interface Project {
@@ -18,11 +19,16 @@ interface Props {
 }
 const { project } = Astro.props;
 ---
-<BaseLayout title={`${project.title} — Innocent Onwukanjo`} description={project.summary}>
-  <p><a href={withBase('/')} class="muted">← All work</a></p>
-  <p class="eyebrow">Case study</p>
-  <h1 style="margin:6px 0 10px">{project.title}</h1>
-  <p class="muted" style="font-size:1.05rem; max-width:60ch">{project.summary}</p>
+<BaseLayout title={`${project.title} · Innocent Onwukanjo`} description={project.summary}>
+  <p style="margin-top:28px">
+    <a href={withBase('/#work')} class="muted" style="display:inline-flex; align-items:center; gap:6px">
+      <span style="transform:rotate(180deg); display:inline-flex"><Icon name="arrow" size={15} /></span> All work
+    </a>
+  </p>
+
+  <span class="eyebrow">Case study</span>
+  <h1 style="font-size:clamp(1.8rem,4vw,2.6rem); margin:10px 0 12px">{project.title}</h1>
+  <p class="muted" style="font-size:1.1rem; max-width:62ch">{project.summary}</p>
 
   <dl class="meta-row">
     <div><dt>Role</dt><dd>{project.role}</dd></div>
@@ -30,10 +36,16 @@ const { project } = Astro.props;
     <div><dt>Stack</dt><dd>{project.stack.join(' · ')}</dd></div>
   </dl>
 
-  <div class="tags" style="margin-bottom:24px; gap:10px">
+  <div class="tags" style="margin-bottom:30px; gap:12px">
     <DemoLink demoUrl={project.demoUrl} walkthroughUrl={project.walkthroughUrl} />
-    {project.repoUrl && <a class="btn btn-ghost" href={project.repoUrl} target="_blank" rel="noopener">Source</a>}
+    {project.repoUrl && (
+      <a class="btn btn-ghost" href={project.repoUrl} target="_blank" rel="noopener">
+        <Icon name="external" size={15} /> Source
+      </a>
+    )}
   </div>
+
+  <hr class="rule" style="margin-bottom:30px" />
 
   <article class="prose">
     <slot />

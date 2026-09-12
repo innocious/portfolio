@@ -1,15 +1,31 @@
 ---
 import status from '../data/status.json';
 import { withBase } from '../lib/paths';
+import { site } from '../lib/site';
+import Icon from './Icon.astro';
 
 const state = status.backend.state as 'online' | 'degraded' | 'offline';
-const label = state === 'online' ? 'All systems operational' : state === 'degraded' ? 'Partial outage' : 'Backend offline';
+const label =
+  state === 'online' ? 'All systems operational'
+  : state === 'degraded' ? 'Partial outage'
+  : 'Backend offline';
 ---
 <footer class="site-footer">
-  <div class="container nav">
-    <span class="muted" style="font-size:0.9rem">© {new Date().getFullYear()} Innocent Onwukanjo</span>
-    <a href={withBase('/status')} class="nav-links" style="font-size:0.9rem">
-      <span class={`dot ${state}`}></span>&nbsp;{label}
+  <div class="container footer-inner">
+    <span class="muted" style="font-size:0.88rem">© {new Date().getFullYear()} {site.name}</span>
+
+    <a class="status-pill" href={withBase('/status')}>
+      <span class={`dot ${state}`}></span>{label}
     </a>
+
+    <div class="socials">
+      {site.socials.github && (
+        <a class="icon-btn" href={site.socials.github} target="_blank" rel="noopener" aria-label="GitHub"><Icon name="github" size={16} /></a>
+      )}
+      {site.socials.linkedin && (
+        <a class="icon-btn" href={site.socials.linkedin} target="_blank" rel="noopener" aria-label="LinkedIn"><Icon name="linkedin" size={16} /></a>
+      )}
+      <a class="icon-btn" href={`mailto:${site.email}`} aria-label="Email"><Icon name="mail" size={16} /></a>
+    </div>
   </div>
 </footer>

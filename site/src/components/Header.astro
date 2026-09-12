@@ -1,12 +1,27 @@
 ---
 import { withBase } from '../lib/paths';
+import { site } from '../lib/site';
+import Icon from './Icon.astro';
 ---
 <header class="site-header">
   <div class="container nav">
-    <a class="brand" href={withBase('/')}>Innocent Onwukanjo</a>
-    <nav class="nav-links">
-      <a href={withBase('/')}>Work</a>
-      <a href={withBase('/status')}>Status</a>
-    </nav>
+    <a class="brand" href={withBase('/')}>{site.name}<span class="dotmark">.</span></a>
+
+    <div class="nav-cluster">
+      <nav class="nav-links">
+        <a href={withBase('/#about')}>About</a>
+        <a href={withBase('/#work')}>Work</a>
+        <a href={withBase('/#skills')}>Skills</a>
+        <a href={withBase('/status')}>Status</a>
+      </nav>
+      {site.socials.github && (
+        <a class="icon-btn" href={site.socials.github} target="_blank" rel="noopener" aria-label="GitHub">
+          <Icon name="github" size={17} />
+        </a>
+      )}
+      <button id="theme-toggle" class="icon-btn" type="button" aria-label="Toggle color theme">
+        <Icon name="moon" size={17} />
+      </button>
+    </div>
   </div>
 </header>

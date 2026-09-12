@@ -1,18 +1,24 @@
 ---
 import { withBase } from '../lib/paths';
+import Icon from './Icon.astro';
 
 interface Props {
   slug: string;
   title: string;
   summary: string;
   stack: string[];
+  repoUrl?: string;
 }
-const { slug, title, summary, stack } = Astro.props;
+const { slug, title, summary, stack, repoUrl } = Astro.props;
 ---
 <article class="card">
   <h3><a href={withBase(`/projects/${slug}`)}>{title}</a></h3>
   <p class="muted" style="margin:0">{summary}</p>
   <div class="tags">
-    {stack.slice(0, 5).map((s) => <span class="tag">{s}</span>)}
+    {stack.slice(0, 6).map((s) => <span class="tag">{s}</span>)}
+  </div>
+  <div class="card-links">
+    <a href={withBase(`/projects/${slug}`)}>Case study <Icon name="arrow" size={15} /></a>
+    {repoUrl && <a href={repoUrl} target="_blank" rel="noopener">Source <Icon name="external" size={14} /></a>}
   </div>
 </article>
