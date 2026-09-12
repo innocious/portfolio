@@ -1,0 +1,25 @@
+---
+import { certifications, site } from '../lib/site';
+import Icon from './Icon.astro';
+---
+<div class="cert-list">
+  {
+    certifications.map((c) => (
+      <div class="cert">
+        <span style="color:var(--accent); margin-top:2px"><Icon name="credly" size={18} /></span>
+        <div>
+          <div class="t">{c.title}</div>
+          <div class="i">{c.issuer} · {c.year}</div>
+        </div>
+        <span class="yr" style="margin-left:auto">{c.year}</span>
+      </div>
+    ))
+  }
+</div>
+{site.socials.credly && (
+  <p style="margin-top:18px">
+    <a class="btn btn-ghost" href={site.socials.credly} target="_blank" rel="noopener">
+      <Icon name="credly" size={16} /> Verify on Credly <Icon name="external" size={14} />
+    </a>
+  </p>
+)}

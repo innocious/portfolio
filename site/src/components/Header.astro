@@ -2,26 +2,29 @@
 import { withBase } from '../lib/paths';
 import { site } from '../lib/site';
 import Icon from './Icon.astro';
+
+const links = [
+  ['Home', '/#top'],
+  ['About', '/#about'],
+  ['Experience', '/#experience'],
+  ['Education', '/#education'],
+  ['Skills', '/#skills'],
+  ['Projects', '/#projects'],
+  ['Library', '/#library'],
+];
 ---
 <header class="site-header">
   <div class="container nav">
-    <a class="brand" href={withBase('/')}>{site.name}<span class="dotmark">.</span></a>
+    <a class="brand" href={withBase('/#top')}>{site.name}<span class="dotmark">.</span></a>
 
     <div class="nav-cluster">
       <nav class="nav-links">
-        <a href={withBase('/#about')}>About</a>
-        <a href={withBase('/#work')}>Work</a>
-        <a href={withBase('/#skills')}>Skills</a>
-        <a href={withBase('/status')}>Status</a>
+        {links.map(([label, href]) => <a href={withBase(href)}>{label}</a>)}
       </nav>
       {site.socials.github && (
-        <a class="icon-btn" href={site.socials.github} target="_blank" rel="noopener" aria-label="GitHub">
-          <Icon name="github" size={17} />
-        </a>
+        <a class="icon-btn" href={site.socials.github} target="_blank" rel="noopener" aria-label="GitHub"><Icon name="github" size={17} /></a>
       )}
-      <button id="theme-toggle" class="icon-btn" type="button" aria-label="Toggle color theme">
-        <Icon name="moon" size={17} />
-      </button>
+      <button id="theme-toggle" class="icon-btn" type="button" aria-label="Toggle color theme"><Icon name="moon" size={17} /></button>
     </div>
   </div>
 </header>

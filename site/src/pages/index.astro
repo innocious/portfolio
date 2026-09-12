@@ -2,13 +2,15 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Hero from '../components/Hero.astro';
-import ProjectCard from '../components/ProjectCard.astro';
+import Experience from '../components/Experience.astro';
+import Education from '../components/Education.astro';
+import Certifications from '../components/Certifications.astro';
 import Skills from '../components/Skills.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import LibraryCTA from '../components/LibraryCTA.astro';
 import { site } from '../lib/site';
 
-const projects = (await getCollection('projects')).sort(
-  (a, b) => a.data.order - b.data.order,
-);
+const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
 ---
 <BaseLayout title={`${site.name} · ${site.role}`}>
   <Hero />
@@ -18,39 +20,37 @@ const projects = (await getCollection('projects')).sort(
   <section id="about" class="section">
     <div class="section-head">
       <span class="eyebrow">About</span>
-      <h2>How I work</h2>
+      <h2>Who I am</h2>
     </div>
     <p class="muted" style="max-width:72ch; font-size:1.08rem">
-      Most side projects die the moment their single server does. I design the
-      opposite: a static surface that is always reachable, a backend allowed to
-      come and go, and automation that keeps the two honest with each other. The
-      result costs almost nothing to run and stays useful under conditions that
-      would take a normal stack offline. Everything you see here, including the
-      live status and the free tier it runs on, is built that way on purpose.
+      I am a DevOps and platform engineer with more than five years building, automating,
+      and running cloud systems. I have shipped and hardened infrastructure and delivery
+      pipelines for enterprises like MTN South Africa and Standard Bank, and for
+      fast-moving startups, across AWS, Azure, and GCP. My focus is simple: help teams
+      ship faster while their systems stay reliable and affordable to run. I am currently
+      a student at Memorial University of Newfoundland in Canada.
     </p>
   </section>
 
   <hr class="rule" />
 
-  <section id="work" class="section">
+  <section id="experience" class="section">
     <div class="section-head">
-      <span class="eyebrow">Selected work</span>
-      <h2>Case studies</h2>
-      <p>Representative projects using illustrative data. Each links to a full write-up.</p>
+      <span class="eyebrow">Experience</span>
+      <h2>Where I have worked</h2>
+      <p>Selected roles across enterprise and startup engineering teams.</p>
     </div>
-    <div class="grid">
-      {
-        projects.map((p) => (
-          <ProjectCard
-            slug={p.id}
-            title={p.data.title}
-            summary={p.data.summary}
-            stack={p.data.stack}
-            repoUrl={p.data.repoUrl}
-          />
-        ))
-      }
+    <Experience />
+  </section>
+
+  <hr class="rule" />
+
+  <section id="education" class="section">
+    <div class="section-head">
+      <span class="eyebrow">Education</span>
+      <h2>Where I studied</h2>
     </div>
+    <Education />
   </section>
 
   <hr class="rule" />
@@ -62,4 +62,31 @@ const projects = (await getCollection('projects')).sort(
     </div>
     <Skills />
   </section>
+
+  <hr class="rule" />
+
+  <section id="certifications" class="section">
+    <div class="section-head">
+      <span class="eyebrow">Credentials</span>
+      <h2>Certifications</h2>
+    </div>
+    <Certifications />
+  </section>
+
+  <hr class="rule" />
+
+  <section id="projects" class="section">
+    <div class="section-head">
+      <span class="eyebrow">Selected work</span>
+      <h2>Projects</h2>
+      <p>Deeper write-ups of things I have built.</p>
+    </div>
+    <div class="grid">
+      {projects.map((p) => (
+        <ProjectCard slug={p.id} title={p.data.title} summary={p.data.summary} stack={p.data.stack} repoUrl={p.data.repoUrl} />
+      ))}
+    </div>
+  </section>
+
+  <LibraryCTA />
 </BaseLayout>

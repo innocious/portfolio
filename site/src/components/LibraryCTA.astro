@@ -1,0 +1,20 @@
+---
+import { site } from '../lib/site';
+import Icon from './Icon.astro';
+---
+<section class="library" id="library">
+  <span class="eyebrow">The library</span>
+  <h2>A living library of my work</h2>
+  <p>{site.libraryText}</p>
+  {
+    site.appUrl ? (
+      <a class="btn btn-primary" href={site.appUrl} target="_blank" rel="noopener">
+        Enter the library <Icon name="arrow" size={17} />
+      </a>
+    ) : (
+      <span class="btn btn-disabled">
+        Enter the library <span class="soon">coming soon</span>
+      </span>
+    )
+  }
+</section>
