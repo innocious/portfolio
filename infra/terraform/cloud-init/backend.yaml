@@ -1,0 +1,36 @@
+#cloud-config
+# Minimal bring-up for a backend host: install Docker + compose plugin and open
+# the web ports in the host firewall. The demo / observability stack itself is
+# deployed in a later step via docker compose. Kept light so it also completes
+# comfortably on the 1 GB E2.1.Micro.
+package_update: true
+package_upgrade: false
+packages:
+  - ca-certificates
+  - curl
+  - gnupg
+
+write_files:
+  - path: /opt/stack/README.md
+    permissions: "0644"
+    content: |
+      Backend host provisioned by Terraform.
+      The demo / observability stack (Caddy, Uptime Kuma, ...) is deployed here
+      in a later step via `docker compose`.
+
+runcmd:
+  # Docker Engine from the official repository (arch resolved automatically, so
+  # this file works unchanged on both x86 E2 and ARM A1 hosts).
+  - install -m 0755 -d /etc/apt/keyrings
+  - curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+  - chmod a+r /etc/apt/keyrings/docker.asc
+  - echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu $(. /etc/os-release && echo $VERSION_CODENAME) stable" > /etc/apt/sources.list.d/docker.list
+  - apt-get update
+  - apt-get install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin
+  - systemctl enable --now docker
+  - usermod -aG docker ubuntu
+  # OCI Ubuntu images ship with iptables rules that drop everything but SSH.
+  # Open 80/443 locally so the VCN security list rules actually take effect.
+  - iptables -I INPUT 6 -m state --state NEW -p tcp --dport 80 -j ACCEPT
+  - iptables -I INPUT 6 -m state --state NEW -p tcp --dport 443 -j ACCEPT
+  - netfilter-persistent save

@@ -1,0 +1,114 @@
+name: Provision OCI infrastructure
+
+# Provisions the network + AMD fallback backend immediately, then keeps trying
+# to place the capacity-constrained ARM A1.Flex — cycling availability domains
+# and stepping the OCPU/memory tier down until Oracle has capacity to give.
+
+on:
+  workflow_dispatch:
+    inputs:
+      retry_a1:
+        description: "Attempt to place the ARM A1.Flex (cycle ADs / step down OCPUs)"
+        type: boolean
+        default: true
+  schedule:
+    # Every 30 minutes: retry ARM A1 capacity until it lands. Scheduled runs
+    # execute only on the default branch.
+    - cron: "*/30 * * * *"
+
+# Serialise applies so two runs never touch remote state at once (OCI Object
+# Storage has no state-locking table, so this concurrency gate stands in for it).
+concurrency:
+  group: oci-provision
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+env:
+  TF_IN_AUTOMATION: "true"
+  TF_INPUT: "false"
+  # OCI API-key auth
+  TF_VAR_tenancy_ocid: ${{ secrets.OCI_TENANCY_OCID }}
+  TF_VAR_user_ocid: ${{ secrets.OCI_USER_OCID }}
+  TF_VAR_fingerprint: ${{ secrets.OCI_FINGERPRINT }}
+  TF_VAR_private_key: ${{ secrets.OCI_PRIVATE_KEY }}
+  TF_VAR_compartment_ocid: ${{ secrets.OCI_COMPARTMENT_OCID }}
+  TF_VAR_ssh_public_key: ${{ secrets.SSH_PUBLIC_KEY }}
+  TF_VAR_region: uk-london-1
+
+defaults:
+  run:
+    working-directory: infra/terraform
+
+jobs:
+  provision:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.5.7
+
+      - name: Terraform init (remote state in OCI Object Storage)
+        run: |
+          terraform init \
+            -backend-config="bucket=${{ secrets.OCI_STATE_BUCKET }}" \
+            -backend-config="key=oci-portfolio.tfstate" \
+            -backend-config="region=uk-london-1" \
+            -backend-config="endpoint=https://${{ secrets.OCI_NAMESPACE }}.compat.objectstorage.uk-london-1.oraclecloud.com" \
+            -backend-config="access_key=${{ secrets.OCI_S3_ACCESS_KEY }}" \
+            -backend-config="secret_key=${{ secrets.OCI_S3_SECRET_KEY }}" \
+            -backend-config="skip_region_validation=true" \
+            -backend-config="skip_credentials_validation=true" \
+            -backend-config="skip_metadata_api_check=true" \
+            -backend-config="force_path_style=true"
+
+      - name: Validate
+        run: terraform validate
+
+      - name: Provision network + AMD fallback backend
+        run: |
+          terraform apply -auto-approve \
+            -target=oci_core_instance.e2_micro
+
+      - name: Secure ARM A1.Flex capacity (cycle ADs, then step down OCPUs)
+        if: ${{ github.event_name == 'schedule' || inputs.retry_a1 }}
+        run: |
+          set +e
+
+          # Idempotent: once the A1 exists in state, stop retrying so we never
+          # tear a working instance down to chase a different tier.
+          if terraform state list | grep -q 'oci_core_instance.a1\['; then
+            echo "A1.Flex already provisioned — nothing to retry."
+            terraform output
+            exit 0
+          fi
+
+          # (OCPUs, memory_GB) tiers, largest first. A smaller request is far
+          # more likely to find capacity, so we step down before giving up.
+          tiers=("4 24" "2 12" "1 6")
+
+          for tier in "${tiers[@]}"; do
+            set -- $tier
+            ocpus=$1; mem=$2
+            for ad in 1 2 3; do
+              echo "::group::A1 attempt — AD ${ad}, ${ocpus} OCPU / ${mem} GB"
+              terraform apply -auto-approve \
+                -target=oci_core_instance.a1 \
+                -var="a1_ad_number=${ad}" \
+                -var="a1_ocpus=${ocpus}" \
+                -var="a1_memory_gb=${mem}"
+              rc=$?
+              echo "::endgroup::"
+              if [ $rc -eq 0 ]; then
+                echo "A1.Flex placed in AD ${ad} at ${ocpus} OCPU / ${mem} GB."
+                terraform output
+                exit 0
+              fi
+            done
+          done
+
+          echo "All ADs / tiers out of capacity this run; the next scheduled run will retry."
+          exit 1

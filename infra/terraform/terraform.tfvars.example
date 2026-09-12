@@ -1,0 +1,20 @@
+# Copy to terraform.tfvars for local runs and fill in your values.
+# In CI these are supplied as TF_VAR_* environment variables from GitHub
+# secrets instead of a file — see .github/workflows/oci-provision.yml.
+
+tenancy_ocid     = "ocid1.tenancy.oc1..xxxxxxxx"
+user_ocid        = "ocid1.user.oc1..xxxxxxxx"
+fingerprint      = "aa:bb:cc:dd:ee:ff:00:11:22:33:44:55:66:77:88:99"
+compartment_ocid = "ocid1.compartment.oc1..xxxxxxxx"
+region           = "uk-london-1"
+
+# Prefer the TF_VAR_private_key env var over pasting the PEM here:
+#   export TF_VAR_private_key="$(cat ~/.oci/oci_api_key.pem)"
+# private_key = "-----BEGIN PRIVATE KEY-----\n...\n-----END PRIVATE KEY-----"
+
+ssh_public_key = "ssh-ed25519 AAAA... you@host"
+
+# Optional overrides (defaults are Always-Free-safe):
+# boot_volume_gb = 50
+# a1_ocpus       = 4
+# a1_memory_gb   = 24
