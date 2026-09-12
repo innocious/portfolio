@@ -6,7 +6,7 @@ timeframe: "2026"
 stack: ["Terraform", "Oracle Cloud", "GitHub Actions", "Docker", "Caddy"]
 demoUrl: https://demo.example.com/infra
 walkthroughUrl: https://www.youtube.com/watch?v=dQw4w9WgXcQ
-repoUrl: https://github.com/innocious/Portfolio-Site
+repoUrl: https://github.com/innocious/portfolio
 featured: true
 order: 1
 ---
