@@ -5,15 +5,19 @@ import Icon from './Icon.astro';
 
 const contactHref = site.contact || `mailto:${site.email}`;
 ---
-<section class="hero">
+<section class="hero" id="top">
   <div>
     <span class="eyebrow">{site.role}</span>
     <h1>{site.name}</h1>
     <p class="hero-headline">{site.headline}</p>
     <p class="lead">{site.about}</p>
 
+    <p class="locline">
+      <Icon name="arrow" size={14} /> {site.location} · Studying at {site.studyingAt}
+    </p>
+
     <div class="hero-cta">
-      <a class="btn btn-primary" href={withBase('/#work')}>View work <Icon name="arrow" size={17} /></a>
+      <a class="btn btn-primary" href={withBase('/#experience')}>View experience <Icon name="arrow" size={17} /></a>
       <a class="btn btn-ghost" href={contactHref}>Get in touch</a>
       {site.resumeUrl && (
         <a class="btn btn-ghost" href={withBase(site.resumeUrl)} target="_blank" rel="noopener"><Icon name="doc" size={16} /> Resume</a>
@@ -21,15 +25,9 @@ const contactHref = site.contact || `mailto:${site.email}`;
     </div>
 
     <div class="hero-socials">
-      {site.socials.github && (
-        <a class="icon-btn" href={site.socials.github} target="_blank" rel="noopener" aria-label="GitHub"><Icon name="github" /></a>
-      )}
-      {site.socials.linkedin && (
-        <a class="icon-btn" href={site.socials.linkedin} target="_blank" rel="noopener" aria-label="LinkedIn"><Icon name="linkedin" /></a>
-      )}
-      {site.socials.credly && (
-        <a class="icon-btn" href={site.socials.credly} target="_blank" rel="noopener" aria-label="Credly"><Icon name="credly" /></a>
-      )}
+      {site.socials.github && <a class="icon-btn" href={site.socials.github} target="_blank" rel="noopener" aria-label="GitHub"><Icon name="github" /></a>}
+      {site.socials.linkedin && <a class="icon-btn" href={site.socials.linkedin} target="_blank" rel="noopener" aria-label="LinkedIn"><Icon name="linkedin" /></a>}
+      {site.socials.credly && <a class="icon-btn" href={site.socials.credly} target="_blank" rel="noopener" aria-label="Credly"><Icon name="credly" /></a>}
       <a class="icon-btn" href={`mailto:${site.email}`} aria-label="Email"><Icon name="mail" /></a>
     </div>
   </div>

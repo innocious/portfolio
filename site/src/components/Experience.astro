@@ -1,0 +1,26 @@
+---
+import { experience } from '../lib/site';
+---
+<div class="timeline">
+  {
+    experience.map((job) => (
+      <div class="tl-item">
+        <div class="tl-top">
+          <div>
+            <span class="tl-role">{job.role}</span>
+            <span class="muted"> at </span>
+            <span class="tl-co">{job.company}</span>
+            {job.client && <div class="tl-client">{job.client}</div>}
+          </div>
+          <div style="text-align:right">
+            <div class="tl-dates">{job.start} &ndash; {job.end}</div>
+            {job.location && <div class="tl-loc">{job.location}</div>}
+          </div>
+        </div>
+        <ul class="tl-bullets">
+          {job.bullets.map((b) => <li>{b}</li>)}
+        </ul>
+      </div>
+    ))
+  }
+</div>
