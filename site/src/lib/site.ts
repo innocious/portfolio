@@ -4,7 +4,7 @@
 export const site = {
   name: 'Innocent Onwukanjo',
   fullName: 'Innocent Onyechigoziri Onwukanjo',
-  role: 'DevOps & Platform Engineer',
+  role: 'DevOps · SRE · Platform Engineer',
   // Short headline phrase (not a sentence).
   headline: 'Reliable cloud. Faster delivery. Real uptime.',
   // Thorough intro for the hero / about.
@@ -139,7 +139,7 @@ export type School = {
 export const education: School[] = [
   {
     school: 'Memorial University of Newfoundland',
-    qualification: 'Current student', // update with your exact program
+    qualification: 'MASc, Computer Engineering',
     end: 'Present',
     location: 'Canada',
     current: true,
