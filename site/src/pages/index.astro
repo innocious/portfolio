@@ -1,40 +1,65 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
 import ProjectCard from '../components/ProjectCard.astro';
-import { withBase } from '../lib/paths';
+import Skills from '../components/Skills.astro';
+import { site } from '../lib/site';
 
 const projects = (await getCollection('projects')).sort(
   (a, b) => a.data.order - b.data.order,
 );
 ---
-<BaseLayout title="Innocent Onwukanjo — Portfolio">
-  <section class="hero">
-    <p class="eyebrow">Cloud & platform engineering</p>
-    <h1>I build resilient systems that stay useful when the infrastructure underneath them doesn't.</h1>
-    <p>
-      Selected case studies below. This site itself is the running example — a static
-      front end that never goes down, backed by an intermittent free-tier cloud host,
-      with a <a href={withBase('/status')}>public status page</a> that swaps live demos
-      for recorded walkthroughs when the backend is offline.
+<BaseLayout title={`${site.name} · ${site.role}`}>
+  <Hero />
+
+  <hr class="rule" />
+
+  <section id="about" class="section">
+    <div class="section-head">
+      <span class="eyebrow">About</span>
+      <h2>Resilience over uptime theater</h2>
+    </div>
+    <p class="muted" style="max-width:72ch; font-size:1.08rem">
+      Most side projects die the moment their single server does. I design the
+      opposite: a static surface that is always reachable, a backend allowed to
+      come and go, and automation that keeps the two honest with each other. The
+      result costs almost nothing to run and stays useful under conditions that
+      would take a normal stack offline. Everything you see here, including the
+      live status and the free tier it runs on, is built that way on purpose.
     </p>
   </section>
 
-  <div class="section-head">
-    <h2 style="margin:0">Work</h2>
-    <a class="muted" href={withBase('/status')}>System status →</a>
-  </div>
+  <hr class="rule" />
 
-  <div class="grid">
-    {
-      projects.map((p) => (
-        <ProjectCard
-          slug={p.id}
-          title={p.data.title}
-          summary={p.data.summary}
-          stack={p.data.stack}
-        />
-      ))
-    }
-  </div>
+  <section id="work" class="section">
+    <div class="section-head">
+      <span class="eyebrow">Selected work</span>
+      <h2>Case studies</h2>
+      <p>Representative projects using illustrative data. Each links to a full write-up.</p>
+    </div>
+    <div class="grid">
+      {
+        projects.map((p) => (
+          <ProjectCard
+            slug={p.id}
+            title={p.data.title}
+            summary={p.data.summary}
+            stack={p.data.stack}
+            repoUrl={p.data.repoUrl}
+          />
+        ))
+      }
+    </div>
+  </section>
+
+  <hr class="rule" />
+
+  <section id="skills" class="section">
+    <div class="section-head">
+      <span class="eyebrow">Toolbox</span>
+      <h2>Skills and tools</h2>
+    </div>
+    <Skills />
+  </section>
 </BaseLayout>

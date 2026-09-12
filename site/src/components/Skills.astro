@@ -1,0 +1,15 @@
+---
+import { skills } from '../lib/site';
+---
+<div class="skills-grid">
+  {
+    skills.map((group) => (
+      <div class="skill-group">
+        <h3>{group.group}</h3>
+        <div class="tags">
+          {group.items.map((item) => <span class="tag">{item}</span>)}
+        </div>
+      </div>
+    ))
+  }
+</div>
