@@ -1,0 +1,41 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import DemoLink from '../components/DemoLink.astro';
+import { withBase } from '../lib/paths';
+
+interface Project {
+  title: string;
+  summary: string;
+  role: string;
+  timeframe: string;
+  stack: string[];
+  demoUrl?: string;
+  walkthroughUrl?: string;
+  repoUrl?: string;
+}
+interface Props {
+  project: Project;
+}
+const { project } = Astro.props;
+---
+<BaseLayout title={`${project.title} — Innocent Onwukanjo`} description={project.summary}>
+  <p><a href={withBase('/')} class="muted">← All work</a></p>
+  <p class="eyebrow">Case study</p>
+  <h1 style="margin:6px 0 10px">{project.title}</h1>
+  <p class="muted" style="font-size:1.05rem; max-width:60ch">{project.summary}</p>
+
+  <dl class="meta-row">
+    <div><dt>Role</dt><dd>{project.role}</dd></div>
+    <div><dt>Timeframe</dt><dd>{project.timeframe}</dd></div>
+    <div><dt>Stack</dt><dd>{project.stack.join(' · ')}</dd></div>
+  </dl>
+
+  <div class="tags" style="margin-bottom:24px; gap:10px">
+    <DemoLink demoUrl={project.demoUrl} walkthroughUrl={project.walkthroughUrl} />
+    {project.repoUrl && <a class="btn btn-ghost" href={project.repoUrl} target="_blank" rel="noopener">Source</a>}
+  </div>
+
+  <article class="prose">
+    <slot />
+  </article>
+</BaseLayout>
