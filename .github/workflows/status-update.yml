@@ -1,0 +1,69 @@
+name: Update status and redeploy
+
+# Probes the backend, refreshes status.json, then rebuilds and redeploys the
+# static site so the public status page and the live-demo/walkthrough fallbacks
+# always reflect reality. Self-contained: it deploys within the same run rather
+# than relying on the status commit to trigger the deploy workflow (a push made
+# with GITHUB_TOKEN does not trigger other workflows).
+
+on:
+  schedule:
+    - cron: "*/30 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write # commit the refreshed status.json
+  pages: write # deploy to Pages
+  id-token: write # Pages OIDC
+
+# Share the Pages concurrency group with deploy-site so the two never race.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: site/package-lock.json
+
+      - name: Probe services and refresh status.json
+        run: node scripts/status-probe.mjs
+
+      - name: Persist status change
+        run: |
+          if git diff --quiet -- site/src/data/status.json; then
+            echo "No status change."
+          else
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add site/src/data/status.json
+            git commit -m "chore(status): refresh status.json"
+            git push
+          fi
+
+      - name: Build
+        working-directory: site
+        run: |
+          npm ci
+          npm run build
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site/dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
