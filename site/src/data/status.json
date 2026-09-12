@@ -1,14 +1,30 @@
 {
-  "generatedAt": "2026-09-12T18:00:00Z",
+  "generatedAt": "2026-09-12T21:31:52.638Z",
   "backend": {
-    "state": "online",
+    "state": "offline",
     "activeHost": "arm",
-    "note": "ARM A1.Flex primary online. AMD E2.1.Micro on warm standby."
+    "note": "Backend offline. Showing recorded walkthroughs. Static site unaffected."
   },
   "services": [
-    { "name": "Portfolio (GitHub Pages)", "state": "online", "latencyMs": 38 },
-    { "name": "Demo API", "state": "online", "latencyMs": 74 },
-    { "name": "Uptime Kuma", "state": "online", "latencyMs": 121 },
-    { "name": "Umami analytics", "state": "degraded", "latencyMs": 410 }
+    {
+      "name": "Portfolio (GitHub Pages)",
+      "state": "online",
+      "latencyMs": 115
+    },
+    {
+      "name": "Demo API",
+      "state": "offline",
+      "latencyMs": null
+    },
+    {
+      "name": "Uptime Kuma",
+      "state": "offline",
+      "latencyMs": null
+    },
+    {
+      "name": "Umami analytics",
+      "state": "offline",
+      "latencyMs": null
+    }
   ]
 }
