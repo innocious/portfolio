@@ -1,12 +1,13 @@
 ---
 import { education } from '../lib/site';
+import Icon from './Icon.astro';
 ---
 <div class="edu-grid">
   {
     education.map((e) => (
       <div class={`edu-card${e.current ? ' current' : ''}`}>
         {e.current && <span class="badge">Now</span>}
-        <h3>{e.school}</h3>
+        <h3><span class="edu-ic"><Icon name="cap" size={18} /></span> {e.school}</h3>
         <div class="qual">{e.qualification}</div>
         <div class="when">
           {e.start ? `${e.start} – ${e.end}` : e.end}

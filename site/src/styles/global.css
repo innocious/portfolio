@@ -190,7 +190,8 @@ section { scroll-margin-top: 84px; }
 
 .tags { display: flex; flex-wrap: wrap; gap: 8px; }
 .tag { font-size: 0.72rem; font-family: var(--mono); padding: 3px 10px; border-radius: 999px; background: var(--surface-2); border: 1px solid var(--border); color: var(--muted); }
-.cat-badge { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 700; padding: 3px 10px; border-radius: 999px; color: var(--accent-ink); background: var(--grad); }
+.cat-badge { display: inline-flex; align-items: center; gap: 5px; font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 700; padding: 3px 10px; border-radius: 999px; color: var(--accent-ink); background: var(--grad); }
+.cat-block-head .cat-ic { color: var(--accent); display: inline-flex; }
 
 /* Category groups in the projects section */
 .cat-block { margin-bottom: 40px; }
@@ -224,7 +225,8 @@ section { scroll-margin-top: 84px; }
 .edu-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px; }
 .edu-card { padding: 20px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg-elev); }
 .edu-card.current { border-color: var(--accent); background: linear-gradient(180deg, color-mix(in srgb, var(--accent) 10%, var(--surface)) 0%, var(--surface) 100%); box-shadow: var(--glow); }
-.edu-card h3 { font-size: 1.05rem; }
+.edu-card h3 { font-size: 1.05rem; display: flex; align-items: center; gap: 8px; }
+.edu-card .edu-ic { color: var(--accent); display: inline-flex; flex: none; }
 .edu-card .qual { color: var(--accent); font-weight: 600; margin-top: 4px; }
 .edu-card .when { color: var(--faint); font-size: 0.82rem; font-family: var(--mono); margin-top: 8px; }
 .badge { display: inline-block; font-size: 0.66rem; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 700; color: var(--accent-ink); background: var(--grad); padding: 2px 9px; border-radius: 999px; margin-bottom: 8px; }
