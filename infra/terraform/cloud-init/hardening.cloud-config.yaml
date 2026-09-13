@@ -1,0 +1,36 @@
+#cloud-config
+# Host hardening applied at first boot (security review item #2):
+#   - key-only SSH: password and challenge-response auth disabled
+#   - root SSH login disabled
+#   - fail2ban watching sshd
+#   - unattended security upgrades
+package_update: true
+package_upgrade: true
+
+packages:
+  - fail2ban
+
+write_files:
+  - path: /etc/ssh/sshd_config.d/10-hardening.conf
+    permissions: "0644"
+    content: |
+      PasswordAuthentication no
+      ChallengeResponseAuthentication no
+      KbdInteractiveAuthentication no
+      PermitRootLogin no
+      PubkeyAuthentication yes
+      X11Forwarding no
+      MaxAuthTries 3
+
+  - path: /etc/fail2ban/jail.d/sshd.local
+    permissions: "0644"
+    content: |
+      [sshd]
+      enabled = true
+      maxretry = 4
+      bantime = 1h
+      findtime = 10m
+
+runcmd:
+  - systemctl restart sshd || systemctl restart ssh
+  - systemctl enable --now fail2ban

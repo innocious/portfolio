@@ -1,0 +1,24 @@
+# Copy to terraform.tfvars (gitignored) and fill in. NEVER commit real values
+# or the private key. In CI, pass these as TF_VAR_* env vars from secrets.
+
+tenancy_ocid     = "ocid1.tenancy.oc1..xxxxx"
+user_ocid        = "ocid1.user.oc1..xxxxx"      # the compartment-scoped automation user, NOT an admin
+fingerprint      = "aa:bb:cc:..."
+private_key_path = "~/.oci/portfolio_api_key.pem"
+region           = "us-ashburn-1"
+
+compartment_ocid = "ocid1.compartment.oc1..xxxxx"
+compartment_name = "portfolio"
+
+# SSH locked to your address. A single /32 is best. 0.0.0.0/0 is rejected.
+ssh_ingress_cidr = "203.0.113.4/32"
+ssh_public_key   = "ssh-ed25519 AAAA... you@host"
+
+# Leave web ports closed until the demo stack is actually serving.
+serve_web = false
+
+# Free-tier Ampere A1 (max 4 OCPUs / 24 GB total across the tenancy).
+a1_ocpus            = 4
+a1_memory_gbs       = 24
+availability_domain = "abcd:US-ASHBURN-AD-1"
+image_ocid          = "ocid1.image.oc1..xxxxx"
