@@ -18,7 +18,8 @@ export const site = {
   email: 'onwukanjoinnocent01@gmail.com',
   // Preferred "Get in touch" target. Empty falls back to email.
   contact: '',
-  resumeUrl: '', // set to '/resume.pdf' after adding one to /public
+  resumeUrl: '/docs/Innocent_Onwukanjo_Resume.pdf',
+  cvUrl: '/docs/Innocent_Onwukanjo_CV.pdf',
   socials: {
     github: 'https://github.com/innocious',
     linkedin: 'https://linkedin.com/in/innocent-onwukanjo-80591b160',
