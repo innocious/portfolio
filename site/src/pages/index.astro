@@ -8,6 +8,7 @@ import Certifications from '../components/Certifications.astro';
 import Skills from '../components/Skills.astro';
 import ProjectCard from '../components/ProjectCard.astro';
 import LibraryCTA from '../components/LibraryCTA.astro';
+import ExportKit from '../components/ExportKit.astro';
 import { site } from '../lib/site';
 import { categories } from '../lib/categories';
 import { withBase } from '../lib/paths';
@@ -122,4 +123,5 @@ const shareUrl = (slug: string) => new URL(withBase(`/projects/${slug}`), Astro.
   </section>
 
   <LibraryCTA />
+  <ExportKit />
 </BaseLayout>

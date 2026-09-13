@@ -1,0 +1,155 @@
+---
+// Hidden per-category PDF export. Not shown in the normal UI. Reveal by typing
+// the secret word "kit" on the page, or by visiting with #kit in the URL.
+// The PDF is generated client-side (jsPDF, lazy-loaded) from public project data.
+import { getCollection } from 'astro:content';
+import { categories } from '../lib/categories';
+import { site } from '../lib/site';
+import { withBase } from '../lib/paths';
+
+const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
+const byCat: Record<string, typeof projects> = {};
+for (const p of projects) {
+  const c = p.data.categories[0] ?? 'software';
+  (byCat[c] ??= []).push(p);
+}
+const activeCats = categories.filter((c) => byCat[c.id]?.length);
+const abs = (u: string) => (u.startsWith('http') ? u : new URL(withBase(u), Astro.site).href);
+
+const exportData = {
+  profile: {
+    name: site.fullName ?? site.name,
+    role: site.role,
+    email: site.email,
+    linkedin: site.socials.linkedin,
+    credly: site.socials.credly,
+    github: site.socials.github,
+  },
+  categories: activeCats.map((c) => ({
+    id: c.id,
+    label: c.label,
+    projects: byCat[c.id].map((p) => ({
+      title: p.data.title,
+      summary: p.data.summary,
+      role: p.data.role,
+      timeframe: p.data.timeframe,
+      stack: p.data.stack ?? [],
+      highlights: p.data.highlights ?? [],
+      links: (p.data.links ?? []).map((l) => ({ label: l.label, url: abs(l.url) })),
+      url: new URL(withBase(`/projects/${p.id}`), Astro.site).href,
+    })),
+  })),
+};
+const jspdfSrc = withBase('/vendor/jspdf.umd.min.js');
+---
+<script type="application/json" id="export-data" set:html={JSON.stringify(exportData)}></script>
+
+<div id="export-panel" hidden aria-hidden="true">
+  <div class="ek-head"><span>Project export</span><button type="button" id="ek-close" aria-label="Close">×</button></div>
+  <p class="ek-note">Download a category as a PDF for an application.</p>
+  <div class="ek-list">
+    {activeCats.map((c) => (
+      <button type="button" class="ek-btn" data-cat={c.id}>{c.label} <span class="ek-count">({byCat[c.id].length})</span></button>
+    ))}
+    <button type="button" class="ek-btn ek-all" data-cat="__all__">All projects</button>
+  </div>
+  <div id="ek-status" class="ek-status"></div>
+</div>
+
+<script is:inline define:vars={{ jspdfSrc }}>
+  (function () {
+    var panel = document.getElementById('export-panel');
+    if (!panel) return;
+    var data;
+    try { data = JSON.parse(document.getElementById('export-data').textContent); } catch (e) { return; }
+
+    function show() { panel.hidden = false; panel.setAttribute('aria-hidden', 'false'); }
+    function hide() { panel.hidden = true; panel.setAttribute('aria-hidden', 'true'); }
+    function toggle() { panel.hidden ? show() : hide(); }
+
+    if (location.hash.toLowerCase() === '#kit') show();
+    window.addEventListener('hashchange', function () { if (location.hash.toLowerCase() === '#kit') show(); });
+
+    var buf = '';
+    document.addEventListener('keydown', function (e) {
+      var t = e.target;
+      if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable)) return;
+      if (e.key === 'Escape') { hide(); return; }
+      if (e.key && e.key.length === 1) {
+        buf = (buf + e.key.toLowerCase()).slice(-6);
+        if (buf.indexOf('kit') >= 0) { toggle(); buf = ''; }
+      }
+    });
+    document.getElementById('ek-close').addEventListener('click', hide);
+
+    function setStatus(m) { document.getElementById('ek-status').textContent = m || ''; }
+
+    var jspdfReady;
+    function loadJsPDF() {
+      if (window.jspdf && window.jspdf.jsPDF) return Promise.resolve();
+      if (jspdfReady) return jspdfReady;
+      jspdfReady = new Promise(function (res, rej) {
+        var s = document.createElement('script');
+        s.src = jspdfSrc; s.onload = res; s.onerror = rej;
+        document.head.appendChild(s);
+      });
+      return jspdfReady;
+    }
+
+    function labelFor(id) { var c = data.categories.filter(function (x) { return x.id === id; })[0]; return c ? c.label : id; }
+
+    function build(catId) {
+      var cats = catId === '__all__' ? data.categories : data.categories.filter(function (c) { return c.id === catId; });
+      if (!cats.length) return;
+      var jsPDF = window.jspdf.jsPDF;
+      var doc = new jsPDF({ unit: 'pt', format: 'letter' });
+      var W = doc.internal.pageSize.getWidth(), H = doc.internal.pageSize.getHeight();
+      var M = 54, x = M, cw = W - 2 * M, y = M;
+      function line(str, size, style, color, indent) {
+        doc.setFont('helvetica', style || 'normal'); doc.setFontSize(size); doc.setTextColor(color || '#000000');
+        var parts = doc.splitTextToSize(str, cw - (indent || 0));
+        for (var i = 0; i < parts.length; i++) { if (y > H - M) { doc.addPage(); y = M; } doc.text(parts[i], x + (indent || 0), y); y += size * 1.35; }
+      }
+      var shortUrl = function (u) { return (u || '').replace(/^https?:\/\//, '').replace(/^www\./, '').replace(/\/$/, ''); };
+      doc.setFont('helvetica', 'bold'); doc.setFontSize(18); doc.setTextColor('#000'); doc.text(data.profile.name, x, y); y += 20;
+      doc.setFont('helvetica', 'normal'); doc.setFontSize(9.5); doc.setTextColor('#444');
+      doc.text([data.profile.role, data.profile.email].filter(Boolean).join('   |   '), x, y); y += 13;
+      var links = [data.profile.linkedin, data.profile.credly, data.profile.github].filter(Boolean).map(shortUrl).join('   |   ');
+      if (links) {
+        var lparts = doc.splitTextToSize(links, cw);
+        for (var li = 0; li < lparts.length; li++) { doc.text(lparts[li], x, y); y += 12; }
+        y -= 4;
+      }
+      doc.setDrawColor('#000'); doc.setLineWidth(1); doc.line(x, y, x + cw, y); y += 18;
+
+      cats.forEach(function (c) {
+        if (y > H - M - 20) { doc.addPage(); y = M; }
+        doc.setFont('helvetica', 'bold'); doc.setFontSize(13); doc.setTextColor('#000'); doc.text(c.label + ' projects', x, y); y += 6;
+        doc.setDrawColor('#999'); doc.setLineWidth(0.5); doc.line(x, y, x + cw, y); y += 16;
+        c.projects.forEach(function (p) {
+          line(p.title, 11.5, 'bold', '#000', 0);
+          var meta = [p.role, p.timeframe].filter(Boolean).join('   ·   ');
+          if (meta) line(meta, 8.5, 'italic', '#555', 0);
+          if (p.summary) { y += 2; line(p.summary, 9.5, 'normal', '#000', 0); }
+          (p.highlights || []).forEach(function (h) { line('•  ' + h, 9.5, 'normal', '#000', 10); });
+          if (p.stack && p.stack.length) line('Stack: ' + p.stack.join(', '), 8.5, 'normal', '#555', 0);
+          (p.links || []).forEach(function (l) { line(l.label + ': ' + l.url, 8, 'normal', '#333', 0); });
+          line('Project page: ' + p.url, 8, 'normal', '#333', 0);
+          y += 12;
+        });
+        y += 6;
+      });
+
+      var fn = ((catId === '__all__' ? 'All' : labelFor(catId)) + '_Projects_Innocent_Onwukanjo.pdf').replace(/[^A-Za-z0-9_.-]/g, '_');
+      doc.save(fn);
+    }
+
+    Array.prototype.forEach.call(panel.querySelectorAll('.ek-btn'), function (b) {
+      b.addEventListener('click', function () {
+        setStatus('Generating…');
+        loadJsPDF().then(function () { build(b.getAttribute('data-cat')); setStatus('Downloaded.'); })
+          .catch(function () { setStatus('Could not load the PDF engine.'); });
+      });
+    });
+  })();
+</script>
