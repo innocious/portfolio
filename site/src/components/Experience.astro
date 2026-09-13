@@ -11,6 +11,7 @@ import { experience } from '../lib/site';
             <span class="muted"> at </span>
             <span class="tl-co">{job.company}</span>
             {job.client && <div class="tl-client">{job.client}</div>}
+            {job.scope && <div class="tl-scope">{job.scope}</div>}
           </div>
           <div style="text-align:right">
             <div class="tl-dates">{job.start} &ndash; {job.end}</div>

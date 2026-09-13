@@ -102,7 +102,7 @@ const shareUrl = (slug: string) => new URL(withBase(`/projects/${slug}`), Astro.
             <span class="cat-ic"><Icon name={cat.icon} size={20} /></span>
             <h3>{cat.label}</h3>
             <span class="blurb">{cat.blurb}</span>
-            <span class="cat-count">{byCat[cat.id].length} project{byCat[cat.id].length > 1 ? 's' : ''}</span>
+            {byCat[cat.id].length > 1 && <span class="cat-count">{byCat[cat.id].length} projects</span>}
           </div>
           <div class="grid">
             {byCat[cat.id].map((p) => (
@@ -122,6 +122,6 @@ const shareUrl = (slug: string) => new URL(withBase(`/projects/${slug}`), Astro.
     }
   </section>
 
-  <LibraryCTA />
+  {site.appUrl && <LibraryCTA />}
   <ExportKit />
 </BaseLayout>

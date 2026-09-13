@@ -49,7 +49,7 @@ const jspdfSrc = withBase('/vendor/jspdf.umd.min.js');
   <p class="ek-note">Download a category as a PDF for an application.</p>
   <div class="ek-list">
     {activeCats.map((c) => (
-      <button type="button" class="ek-btn" data-cat={c.id}>{c.label} <span class="ek-count">({byCat[c.id].length})</span></button>
+      <button type="button" class="ek-btn" data-cat={c.id}>{c.label}{byCat[c.id].length > 1 && <span class="ek-count">({byCat[c.id].length})</span>}</button>
     ))}
     <button type="button" class="ek-btn ek-all" data-cat="__all__">All projects</button>
   </div>

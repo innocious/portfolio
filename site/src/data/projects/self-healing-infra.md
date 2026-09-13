@@ -1,6 +1,6 @@
 ---
 title: Self-Healing Free-Tier Cloud Platform
-summary: A portfolio backend that provisions itself on scarce free-tier ARM capacity, fails over to an always-available fallback host, and keeps its public status honest.
+summary: This is the infrastructure running the very page you are reading. A portfolio backend that provisions itself on scarce free-tier ARM capacity, fails over to an always-available fallback host, and keeps its public status honest, so the "Source" link points at this site's own repository on purpose.
 role: Solo (architecture, IaC, CI/CD)
 timeframe: "2026"
 stack: ["Terraform", "Oracle Cloud", "GitHub Actions", "Docker", "Caddy"]
@@ -14,6 +14,15 @@ repoUrl: https://github.com/innocious/portfolio
 featured: true
 order: 2
 ---
+
+## Read this first
+
+You are looking at it. This case study describes the infrastructure that serves
+the exact page you are on right now, which is why the **Source** link opens this
+site's own repository rather than a separate project. The portfolio is the
+product and the proof at the same time: if the architecture below works, this
+page stays up; if it does not, you would be seeing the degraded state described
+further down.
 
 ## The problem
 
