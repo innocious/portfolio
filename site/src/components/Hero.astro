@@ -16,7 +16,10 @@ const contactHref = site.contact || `mailto:${site.email}`;
       <a class="btn btn-primary" href={withBase('/#experience')}>View experience <Icon name="arrow" size={17} /></a>
       <a class="btn btn-ghost" href={contactHref}>Get in touch</a>
       {site.resumeUrl && (
-        <a class="btn btn-ghost" href={withBase(site.resumeUrl)} target="_blank" rel="noopener"><Icon name="doc" size={16} /> Resume</a>
+        <a class="btn btn-ghost" href={withBase(site.resumeUrl)} target="_blank" rel="noopener"><Icon name="download" size={16} /> Resume</a>
+      )}
+      {site.cvUrl && (
+        <a class="btn btn-ghost" href={withBase(site.cvUrl)} target="_blank" rel="noopener"><Icon name="download" size={16} /> CV</a>
       )}
     </div>
 
