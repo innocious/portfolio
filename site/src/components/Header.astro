@@ -10,7 +10,8 @@ const links = [
   ['Education', '/#education'],
   ['Skills', '/#skills'],
   ['Projects', '/#projects'],
-  ['Library', '/#library'],
+  // The Library entry only appears once the app it links to is live.
+  ...(site.appUrl ? [['Library', '/#library']] : []),
 ];
 ---
 <header class="site-header">

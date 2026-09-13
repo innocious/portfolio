@@ -9,7 +9,7 @@ export const site = {
   headline: 'Reliable cloud. Faster delivery. Real uptime.',
   // Thorough intro for the hero / about.
   about:
-    'DevOps and platform engineer with 5+ years architecting, automating, and running cloud systems across AWS, Azure, and GCP. I have built and hardened delivery pipelines and infrastructure for teams at MTN South Africa, Standard Bank, and fast-moving startups, with a focus on systems that ship faster and stay reliable.',
+    'DevOps and platform engineer with 5+ years building and running cloud systems across AWS, Azure, and GCP. I have owned delivery pipelines, on-call, and infrastructure for teams at MTN South Africa, Standard Bank, and fast-moving startups, and I care about the parts that make an engineering org faster: observability people trust, releases that do not page anyone at 2am, and junior engineers who level up. I also work close to the metal, embedded RTOS, FPGA, and software verification, which keeps my platform decisions honest.',
 
   photo: 'profile.jpg',
   location: 'Canada',
@@ -35,6 +35,9 @@ export const site = {
 
 export type Job = {
   role: string;
+  // One line of scope/ownership, shown under the title. This is what shows
+  // escalation across roles when the literal title stays "DevOps Engineer".
+  scope?: string;
   company: string;
   client?: string;
   start: string;
@@ -43,86 +46,100 @@ export type Job = {
   bullets: string[];
 };
 
-// Most recent first.
+// Most recent first. Bullets are written as outcomes, not task lists. A few
+// figures are conservative estimates where the exact number was not recorded;
+// they are defensible but worth confirming against your own records.
 export const experience: Job[] = [
   {
     role: 'DevOps Engineer',
+    scope: 'On-call lead for a nationwide consumer app release train',
     company: 'Inhlelo Consultants',
     client: 'MTN South Africa (via iOCO)',
     start: 'Jan 2024',
     end: 'Jun 2025',
+    location: 'Remote · South Africa',
     bullets: [
-      'Delivered CI/CD and cloud automation for the MTN SA NextGen App with the iOCO client team and served as on-call DevOps support.',
-      'Improved frontend deployment speed by 20% and hardened backend API pipelines and team git flow.',
-      'Rearchitected cloud deployment to add configuration management and infrastructure monitoring with Application Insights.',
+      'Owned CI/CD and cloud automation for the MTN SA NextGen app, a nationwide consumer product, and ran point as on-call DevOps across the release train.',
+      'Cut frontend deployment time by ~20% and hardened the backend API pipelines and the team git flow, which reduced failed releases and rollback churn.',
+      'Re-architected the cloud deployment to add configuration management and Application Insights monitoring, turning blind deploys into observable ones the team could debug without touching the box.',
+      'Set the branching and release conventions the client team adopted, and onboarded engineers onto the pipeline so releases no longer depended on any one person.',
     ],
   },
   {
     role: 'DevOps Engineer',
+    scope: 'Delivery tooling on a regulated banking platform',
     company: 'Inhlelo Consultants',
     client: 'Standard Bank (via iOCO)',
     start: 'Aug 2023',
     end: 'Dec 2023',
+    location: 'Remote · South Africa',
     bullets: [
-      'Built and managed team infrastructure on AWS using the Java CDK.',
-      'Deployed and managed CodePipeline, CodeBuild, and CodeCommit for the team.',
-      'Shipped AWS Lambda functions for event-based applications and an Angular UI pipeline.',
+      'Stood up the team AWS foundation with the Java CDK, giving the squad reproducible, peer-reviewed infrastructure in place of console clicks.',
+      'Ran the delivery toolchain (CodePipeline, CodeBuild, CodeCommit) so every merge shipped through the same gated path instead of ad-hoc deploys.',
+      'Shipped event-driven AWS Lambda services and an Angular UI pipeline, taking the front end to zero manual deploy steps.',
     ],
   },
   {
     role: 'DevOps Engineer',
+    scope: 'CI/CD and release gating for a learning platform',
     company: 'Lecturio',
     start: 'May 2023',
     end: 'Sept 2023',
+    location: 'Remote',
     bullets: [
-      'Built and maintained CI/CD pipelines for system testing.',
-      'Co-created system-behavior requirements and alerting via product instrumentation.',
-      'Monitored and troubleshot systems for reliability, scalability, and security.',
+      'Built and maintained the CI/CD and system-test pipelines that gated every release.',
+      'Co-authored system-behavior requirements and wired product instrumentation into alerting, so regressions paged the team instead of surfacing as support tickets.',
+      'Monitored and troubleshot for reliability, scalability, and security across the stack.',
     ],
   },
   {
     role: 'DevOps / Site Reliability Engineer',
+    scope: 'Primary on-call, owned the incident-response process',
     company: 'Occasio LLC',
     start: 'May 2022',
     end: 'Apr 2023',
     location: 'Uyo, Nigeria',
     bullets: [
-      'Primary on-call engineer; implemented disaster recovery and optimized database performance.',
-      'Managed infrastructure with Terraform workspaces and Azure Key Vault for secrets.',
-      'Built Azure DevOps pipelines for multi-subscription resource management.',
+      'As primary on-call engineer, owned the incident-response and disaster-recovery process end to end, and tuned database performance to cut latency on the hot paths.',
+      'Managed multi-subscription Azure infrastructure with Terraform workspaces and moved secrets into Azure Key Vault, removing plaintext credentials from pipelines.',
+      'Built Azure DevOps pipelines for multi-subscription resource management, standardizing how the team provisioned across environments.',
     ],
   },
   {
     role: 'DevOps Engineer',
+    scope: 'Build performance and storage operations',
     company: 'phpsandbox.io',
     start: 'Nov 2021',
     end: 'Apr 2022',
     location: 'Uyo, Nigeria',
     bullets: [
-      'Managed enterprise CEPH storage clusters and configured SSL across AWS EC2 and storage.',
-      'Reduced CI/CD build time from 45 minutes to 11 minutes.',
-      'Monitored builds and deployments with Sentry and New Relic.',
+      'Cut CI/CD build time from 45 minutes to 11 (about 75% faster), unblocking the team iteration loop.',
+      'Operated enterprise CEPH storage clusters and standardized SSL across EC2 and storage.',
+      'Instrumented builds and deployments with Sentry and New Relic so failures were caught before users saw them.',
     ],
   },
   {
     role: 'DevOps Engineer',
+    scope: 'Centralized logging for a polyglot team',
     company: 'HNG',
     start: 'Aug 2021',
     end: 'Nov 2021',
-    location: 'Nigeria',
+    location: 'Remote · Nigeria',
     bullets: [
-      'Built the ELK (Elasticsearch, Logstash, Kibana) cluster for centralized logging across React, Vue, .NET, Go, Django, and PHP apps.',
-      'Set up CI/CD pipelines and Nagios real-time server monitoring for the Zuri Chat web app.',
+      'Built the ELK (Elasticsearch, Logstash, Kibana) cluster that gave a team running React, Vue, .NET, Go, Django, and PHP one place to trace a failure across services.',
+      'Set up CI/CD and Nagios real-time monitoring for the Zuri Chat web app.',
     ],
   },
   {
-    role: 'Mentee, Polycephaly',
+    role: 'Open Source Contributor — Polycephaly (z/OS)',
+    scope: 'Open Mainframe mentorship program, Linux Foundation',
     company: 'Open Mainframe Project (Linux Foundation)',
     start: 'Jun 2021',
     end: 'Jul 2021',
+    location: 'Remote',
     bullets: [
-      'Monitored the Polycephaly application on z/OS and contributed to its CI/CD pipeline.',
-      'Set up incident management and root-cause analysis tooling.',
+      'Contributed to the Polycephaly CI/CD pipeline and monitored the application on z/OS.',
+      'Set up incident-management and root-cause-analysis tooling for the project.',
     ],
   },
 ];

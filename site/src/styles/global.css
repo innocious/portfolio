@@ -215,6 +215,7 @@ section { scroll-margin-top: 84px; }
 .tl-role { font-size: 1.12rem; font-weight: 700; color: var(--heading); }
 .tl-co { color: var(--accent); font-weight: 600; }
 .tl-client { color: var(--muted); font-weight: 500; }
+.tl-scope { margin-top: 4px; color: var(--accent-2, var(--muted)); font-size: 0.86rem; font-weight: 500; font-style: italic; }
 .tl-dates { font-family: var(--mono); font-size: 0.8rem; color: var(--faint); white-space: nowrap; }
 .tl-loc { color: var(--faint); font-size: 0.82rem; }
 .tl-bullets { margin: 12px 0 0; padding-left: 18px; color: var(--text); }
