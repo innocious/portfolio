@@ -1,2 +1,13 @@
 # Local planning docs (not published)
 planning/
+
+# Terraform: never commit state, real vars, the local provider cache, or keys.
+**/.terraform/
+*.tfstate
+*.tfstate.*
+crash.log
+*.tfvars
+!*.tfvars.example
+*.pem
+.terraform.lock.hcl
+
