@@ -1,6 +1,6 @@
 ---
 import { withBase } from '../lib/paths';
-import { categoryLabel } from '../lib/categories';
+import { categoryLabel, categoryIcon } from '../lib/categories';
 import Icon from './Icon.astro';
 import CopyLink from './CopyLink.astro';
 
@@ -19,7 +19,13 @@ const href = withBase(`/projects/${slug}`);
 <article class="card" id={`project-${slug}`}>
   {categories.length > 0 && (
     <div class="tags">
-      {categories.map((c, i) => (i === 0 ? <span class="cat-badge">{categoryLabel(c)}</span> : <span class="tag">{categoryLabel(c)}</span>))}
+      {categories.map((c, i) =>
+        i === 0 ? (
+          <span class="cat-badge"><Icon name={categoryIcon(c)} size={13} /> {categoryLabel(c)}</span>
+        ) : (
+          <span class="tag">{categoryLabel(c)}</span>
+        ),
+      )}
     </div>
   )}
   <h3><a href={href}>{title}</a></h3>

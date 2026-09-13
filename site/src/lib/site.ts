@@ -9,7 +9,7 @@ export const site = {
   headline: 'Reliable cloud. Faster delivery. Real uptime.',
   // Thorough intro for the hero / about.
   about:
-    'DevOps and platform engineer with 5+ years architecting, automating, and running cloud systems across AWS, Azure, and GCP. I have built and hardened delivery pipelines and infrastructure for teams at MTN South Africa, Standard Bank, and fast-moving startups. Now studying at Memorial University of Newfoundland in Canada, I care about systems that ship faster and stay reliable.',
+    'DevOps and platform engineer with 5+ years architecting, automating, and running cloud systems across AWS, Azure, and GCP. I have built and hardened delivery pipelines and infrastructure for teams at MTN South Africa, Standard Bank, and fast-moving startups, with a focus on systems that ship faster and stay reliable.',
 
   photo: 'profile.jpg',
   location: 'Canada',
@@ -49,7 +49,7 @@ export const experience: Job[] = [
     company: 'Inhlelo Consultants',
     client: 'MTN South Africa (via iOCO)',
     start: 'Jan 2024',
-    end: 'Present',
+    end: 'Jun 2025',
     bullets: [
       'Build and run delivery for the MTN SA NextGen App with the iOCO client team.',
       'On-call DevOps support; automated deployment and maintenance tooling.',

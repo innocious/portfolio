@@ -12,10 +12,6 @@ const contactHref = site.contact || `mailto:${site.email}`;
     <p class="hero-headline">{site.headline}</p>
     <p class="lead">{site.about}</p>
 
-    <p class="locline">
-      <Icon name="arrow" size={14} /> {site.location} · Studying at {site.studyingAt}
-    </p>
-
     <div class="hero-cta">
       <a class="btn btn-primary" href={withBase('/#experience')}>View experience <Icon name="arrow" size={17} /></a>
       <a class="btn btn-ghost" href={contactHref}>Get in touch</a>
