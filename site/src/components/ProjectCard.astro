@@ -1,24 +1,33 @@
 ---
 import { withBase } from '../lib/paths';
+import { categoryLabel } from '../lib/categories';
 import Icon from './Icon.astro';
+import CopyLink from './CopyLink.astro';
 
 interface Props {
   slug: string;
   title: string;
   summary: string;
   stack: string[];
+  categories?: string[];
+  shareUrl: string;
   repoUrl?: string;
 }
-const { slug, title, summary, stack, repoUrl } = Astro.props;
+const { slug, title, summary, stack, categories = [], shareUrl, repoUrl } = Astro.props;
+const href = withBase(`/projects/${slug}`);
 ---
-<article class="card">
-  <h3><a href={withBase(`/projects/${slug}`)}>{title}</a></h3>
+<article class="card" id={`project-${slug}`}>
+  {categories.length > 0 && (
+    <div class="tags">
+      {categories.map((c, i) => (i === 0 ? <span class="cat-badge">{categoryLabel(c)}</span> : <span class="tag">{categoryLabel(c)}</span>))}
+    </div>
+  )}
+  <h3><a href={href}>{title}</a></h3>
   <p class="muted" style="margin:0">{summary}</p>
-  <div class="tags">
-    {stack.slice(0, 6).map((s) => <span class="tag">{s}</span>)}
-  </div>
+  <div class="tags">{stack.slice(0, 6).map((s) => <span class="tag">{s}</span>)}</div>
   <div class="card-links">
-    <a href={withBase(`/projects/${slug}`)}>Case study <Icon name="arrow" size={15} /></a>
+    <a href={href}>Open <Icon name="arrow" size={15} /></a>
     {repoUrl && <a href={repoUrl} target="_blank" rel="noopener">Source <Icon name="external" size={14} /></a>}
+    <CopyLink url={shareUrl} small={true} />
   </div>
 </article>

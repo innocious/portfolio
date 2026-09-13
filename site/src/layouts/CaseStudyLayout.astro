@@ -1,34 +1,54 @@
 ---
 import BaseLayout from './BaseLayout.astro';
 import DemoLink from '../components/DemoLink.astro';
+import CopyLink from '../components/CopyLink.astro';
 import Icon from '../components/Icon.astro';
 import { withBase } from '../lib/paths';
+import { categoryLabel } from '../lib/categories';
 
+interface Link { label: string; url: string }
 interface Project {
   title: string;
   summary: string;
   role: string;
   timeframe: string;
   stack: string[];
+  categories?: string[];
+  highlights?: string[];
+  links?: Link[];
+  course?: string;
   demoUrl?: string;
   walkthroughUrl?: string;
   repoUrl?: string;
 }
 interface Props {
   project: Project;
+  shareUrl: string;
 }
-const { project } = Astro.props;
+const { project, shareUrl } = Astro.props;
+const cats = project.categories ?? [];
+const highlights = project.highlights ?? [];
+const links = project.links ?? [];
+const hasDemo = Boolean(project.demoUrl || project.walkthroughUrl);
+const resolve = (u: string) => (u.startsWith('http') ? u : withBase(u));
+const isFile = (u: string) => !u.startsWith('http');
 ---
 <BaseLayout title={`${project.title} · Innocent Onwukanjo`} description={project.summary}>
   <p style="margin-top:28px">
-    <a href={withBase('/#work')} class="muted" style="display:inline-flex; align-items:center; gap:6px">
-      <span style="transform:rotate(180deg); display:inline-flex"><Icon name="arrow" size={15} /></span> All work
+    <a href={withBase('/#projects')} class="muted" style="display:inline-flex; align-items:center; gap:6px">
+      <span style="transform:rotate(180deg); display:inline-flex"><Icon name="arrow" size={15} /></span> All projects
     </a>
   </p>
 
-  <span class="eyebrow">Case study</span>
+  <span class="eyebrow">Project{project.course ? ` · ${project.course}` : ''}</span>
   <h1 style="font-size:clamp(1.8rem,4vw,2.6rem); margin:10px 0 12px">{project.title}</h1>
-  <p class="muted" style="font-size:1.1rem; max-width:62ch">{project.summary}</p>
+  <p class="muted" style="font-size:1.1rem; max-width:64ch">{project.summary}</p>
+
+  {cats.length > 0 && (
+    <div class="tags" style="margin-top:14px">
+      {cats.map((c, i) => (i === 0 ? <span class="cat-badge">{categoryLabel(c)}</span> : <span class="tag">{categoryLabel(c)}</span>))}
+    </div>
+  )}
 
   <dl class="meta-row">
     <div><dt>Role</dt><dd>{project.role}</dd></div>
@@ -36,14 +56,24 @@ const { project } = Astro.props;
     <div><dt>Stack</dt><dd>{project.stack.join(' · ')}</dd></div>
   </dl>
 
-  <div class="tags" style="margin-bottom:30px; gap:12px">
-    <DemoLink demoUrl={project.demoUrl} walkthroughUrl={project.walkthroughUrl} />
+  <div class="dl-row">
+    <CopyLink url={shareUrl} label="Copy link to this project" />
+    {hasDemo && <DemoLink demoUrl={project.demoUrl} walkthroughUrl={project.walkthroughUrl} />}
     {project.repoUrl && (
-      <a class="btn btn-ghost" href={project.repoUrl} target="_blank" rel="noopener">
-        <Icon name="external" size={15} /> Source
-      </a>
+      <a class="btn btn-ghost" href={project.repoUrl} target="_blank" rel="noopener"><Icon name="external" size={15} /> Source</a>
     )}
+    {links.map((l) => (
+      <a class="btn btn-ghost" href={resolve(l.url)} target="_blank" rel="noopener">
+        <Icon name={isFile(l.url) ? 'download' : 'external'} size={15} /> {l.label}
+      </a>
+    ))}
   </div>
+
+  {highlights.length > 0 && (
+    <ul class="highlights">
+      {highlights.map((h) => <li>{h}</li>)}
+    </ul>
+  )}
 
   <hr class="rule" style="margin-bottom:30px" />
 

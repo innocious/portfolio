@@ -139,6 +139,8 @@ section { scroll-margin-top: 84px; }
 .btn-ghost:hover { border-color: var(--accent); }
 .btn-disabled { color: var(--faint); border-style: dashed; cursor: not-allowed; }
 .btn .hint { font-weight: 400; font-size: 0.78rem; color: var(--muted); margin-left: 0.4ch; }
+.btn-sm { padding: 0.4rem 0.8rem; font-size: 0.82rem; }
+.btn.copied { border-color: var(--ok); color: var(--ok); }
 
 /* ---------------- Header / nav ---------------- */
 .site-header {
@@ -188,6 +190,21 @@ section { scroll-margin-top: 84px; }
 
 .tags { display: flex; flex-wrap: wrap; gap: 8px; }
 .tag { font-size: 0.72rem; font-family: var(--mono); padding: 3px 10px; border-radius: 999px; background: var(--surface-2); border: 1px solid var(--border); color: var(--muted); }
+.cat-badge { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 700; padding: 3px 10px; border-radius: 999px; color: var(--accent-ink); background: var(--grad); }
+
+/* Category groups in the projects section */
+.cat-block { margin-bottom: 40px; }
+.cat-block:last-child { margin-bottom: 0; }
+.cat-block-head { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; margin-bottom: 16px; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
+.cat-block-head h3 { font-size: 1.2rem; color: var(--heading); }
+.cat-block-head .blurb { color: var(--muted); font-size: 0.9rem; }
+.cat-count { font-family: var(--mono); font-size: 0.78rem; color: var(--faint); }
+
+/* Highlights list on the project page */
+.highlights { list-style: none; padding: 0; margin: 0 0 26px; display: grid; gap: 10px; }
+.highlights li { position: relative; padding-left: 26px; color: var(--text); }
+.highlights li::before { content: "▸"; position: absolute; left: 4px; color: var(--accent); }
+.dl-row { display: flex; flex-wrap: wrap; gap: 10px; margin: 6px 0 24px; }
 
 /* ---------------- Experience timeline ---------------- */
 .timeline { position: relative; display: flex; flex-direction: column; gap: 20px; }

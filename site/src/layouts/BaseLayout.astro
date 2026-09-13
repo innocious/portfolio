@@ -60,6 +60,25 @@ const { title, description = `${site.name} · ${site.role}. Portfolio and public
           try { localStorage.setItem('theme', next); } catch (e) {}
         });
       })();
+
+      // Copy-link buttons (delegated).
+      (function () {
+        document.addEventListener('click', function (e) {
+          var b = e.target.closest ? e.target.closest('.copy-link') : null;
+          if (!b) return;
+          var url = b.getAttribute('data-url');
+          var span = b.querySelector('.cl-text');
+          var label = b.getAttribute('data-label') || (span && span.textContent);
+          function ok() {
+            if (span) span.textContent = 'Copied';
+            b.classList.add('copied');
+            setTimeout(function () { if (span) span.textContent = label; b.classList.remove('copied'); }, 1500);
+          }
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(url).then(ok).catch(function () {});
+          }
+        });
+      })();
     </script>
   </body>
 </html>
