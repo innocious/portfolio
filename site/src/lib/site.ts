@@ -52,10 +52,9 @@ export const experience: Job[] = [
     start: 'Jan 2024',
     end: 'Jun 2025',
     bullets: [
-      'Build and run delivery for the MTN SA NextGen App with the iOCO client team.',
-      'On-call DevOps support; automated deployment and maintenance tooling.',
-      'Improved frontend deployment speed by 20% and hardened backend API CI/CD.',
-      'Rearchitected cloud deployment to add configuration management and infra monitoring.',
+      'Delivered CI/CD and cloud automation for the MTN SA NextGen App with the iOCO client team and served as on-call DevOps support.',
+      'Improved frontend deployment speed by 20% and hardened backend API pipelines and team git flow.',
+      'Rearchitected cloud deployment to add configuration management and infrastructure monitoring with Application Insights.',
     ],
   },
   {
