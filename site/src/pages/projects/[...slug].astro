@@ -1,18 +1,17 @@
 ---
 import { getCollection, render } from 'astro:content';
 import CaseStudyLayout from '../../layouts/CaseStudyLayout.astro';
+import { withBase } from '../../lib/paths';
 
 export async function getStaticPaths() {
   const projects = await getCollection('projects');
-  return projects.map((entry) => ({
-    params: { slug: entry.id },
-    props: { entry },
-  }));
+  return projects.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
 }
 
 const { entry } = Astro.props;
 const { Content } = await render(entry);
+const shareUrl = new URL(withBase(`/projects/${entry.id}`), Astro.site).href;
 ---
-<CaseStudyLayout project={entry.data}>
+<CaseStudyLayout project={entry.data} shareUrl={shareUrl}>
   <Content />
 </CaseStudyLayout>

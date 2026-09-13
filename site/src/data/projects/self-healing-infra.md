@@ -4,11 +4,15 @@ summary: A portfolio backend that provisions itself on scarce free-tier ARM capa
 role: Solo (architecture, IaC, CI/CD)
 timeframe: "2026"
 stack: ["Terraform", "Oracle Cloud", "GitHub Actions", "Docker", "Caddy"]
-demoUrl: https://demo.example.com/infra
-walkthroughUrl: https://www.youtube.com/watch?v=dQw4w9WgXcQ
+categories: [devops, platform, sre]
+highlights:
+  - Wrote Terraform for an Oracle Cloud footprint (VCN, subnet, security list, two instances) with free-tier ceilings enforced as variable validations.
+  - Built a GitHub Actions retry workflow that cycles availability domains and steps the ARM shape down until Oracle has capacity, then stops idempotently.
+  - Decoupled an always-on static front end from an intermittent backend, with graceful degradation that swaps live demos for recorded walkthroughs.
+  - Added a self-updating public status page (a scheduled probe writes status.json and redeploys) so the site always tells the truth about what is up.
 repoUrl: https://github.com/innocious/portfolio
 featured: true
-order: 1
+order: 2
 ---
 
 ## The problem

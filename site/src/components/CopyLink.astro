@@ -1,0 +1,12 @@
+---
+import Icon from './Icon.astro';
+interface Props {
+  url: string;
+  label?: string;
+  small?: boolean;
+}
+const { url, label = 'Copy link', small = false } = Astro.props;
+---
+<button class={`btn btn-ghost copy-link${small ? ' btn-sm' : ''}`} type="button" data-url={url} data-label={label}>
+  <Icon name="link" size={small ? 14 : 16} /> <span class="cl-text">{label}</span>
+</button>
