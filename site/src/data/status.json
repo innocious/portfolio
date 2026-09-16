@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-16T02:58:17.511Z",
+  "generatedAt": "2026-09-16T08:23:39.805Z",
   "backend": {
     "state": "offline",
     "activeHost": "arm",
@@ -8,8 +8,8 @@
   "services": [
     {
       "name": "Portfolio (GitHub Pages)",
-      "state": "online",
-      "latencyMs": 268
+      "state": "degraded",
+      "latencyMs": 348
     },
     {
       "name": "Demo API",
