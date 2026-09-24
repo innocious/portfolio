@@ -4,6 +4,7 @@
 export type Category = { id: string; label: string; blurb: string; icon: string };
 
 export const categories: Category[] = [
+  { id: 'ai', label: 'Agentic AI & LLM', blurb: 'LLM-powered applications, agentic pipelines, and prompt engineering.', icon: 'spark' },
   { id: 'devops', label: 'DevOps', blurb: 'Delivery pipelines, automation, and release engineering.', icon: 'server' },
   { id: 'sre', label: 'Site Reliability', blurb: 'Keeping systems available, observable, and recoverable.', icon: 'gauge' },
   { id: 'platform', label: 'Platform & Cloud', blurb: 'Cloud infrastructure and the platforms teams build on.', icon: 'cloud' },
